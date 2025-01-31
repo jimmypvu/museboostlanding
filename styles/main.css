@@ -103,15 +103,21 @@ body {
     display: inline-flex;
     align-items: center;
     margin-left: 0.1rem;
+    transform: translateY(1px) skew(-8deg);
     font-style: italic;
-    transform: skew(-10deg);
 }
 
 .heart-icon svg {
     width: 1.25rem;
     height: 1.25rem;
-    stroke: url(#gradient);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.heart-icon svg path {
+    stroke: var(--off-white);
+    fill: none;
+    stroke-width: 2;
+    opacity: 0.95;
 }
 
 .heart-icon svg:hover {
