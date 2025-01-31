@@ -185,12 +185,18 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: var(--body-font);
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    outline: none;
 }
 
 .cta-button.primary {
     background: var(--gradient);
     border: none;
     color: var(--light-text);
+    position: relative;
+    z-index: 1;
 }
 
 .cta-button.primary:hover {
@@ -202,12 +208,14 @@ body {
     background: var(--light-text);
     border: 1px solid var(--primary-color);
     color: var(--darker-bg);
+    position: relative;
+    z-index: 1;
 }
 
 .cta-button.secondary:hover {
     background: var(--off-white);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 5px 15px rgba(255, 77, 141, 0.1);
 }
 
 /* Services Section */
