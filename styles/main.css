@@ -10,8 +10,9 @@
     --secondary-color: #8c54ff;
     --dark-bg: #111111;
     --darker-bg: #0a0a0a;
-    --light-text: #f4f1eb;
-    --off-white: #e6e3dc;
+    --light-text: #f8f5f0;
+    --off-white: #f4f1eb;
+    --cream-white: #faf7f2;
     --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     --dark-gradient: linear-gradient(135deg, rgba(255, 77, 141, 0.15), rgba(140, 84, 255, 0.15));
     --cursive-brand-font: 'Dancing Script', cursive;
@@ -187,7 +188,6 @@ body {
     font-family: var(--body-font);
     appearance: none;
     -webkit-appearance: none;
-    border: none;
     outline: none;
 }
 
@@ -201,11 +201,12 @@ body {
 
 .cta-button.primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 77, 141, 0.3);
+    box-shadow: 0 8px 20px rgba(255, 77, 141, 0.4),
+                0 4px 12px rgba(200, 50, 100, 0.6);
 }
 
 .cta-button.secondary {
-    background: var(--light-text);
+    background: var(--cream-white);
     border: 1px solid var(--primary-color);
     color: var(--darker-bg);
     position: relative;
@@ -215,7 +216,8 @@ body {
 .cta-button.secondary:hover {
     background: var(--off-white);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 77, 141, 0.1);
+    box-shadow: 0 8px 20px rgba(255, 77, 141, 0.35),
+                0 4px 12px rgba(200, 50, 100, 0.45);
 }
 
 /* Services Section */
