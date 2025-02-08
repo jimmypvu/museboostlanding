@@ -1,21 +1,34 @@
 // Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
+document.addEventListener('click', function(e) {
+    // Check if the clicked element is a link with a hash
+    if (e.target.tagName === 'A' && e.target.getAttribute('href')?.includes('#')) {
+        const href = e.target.getAttribute('href');
+        const isHomePageLink = href.startsWith('/#');
+        const fragmentId = href.split('#')[1];
+        
+        // If we're not on the home page and it's a home page fragment link
+        if (isHomePageLink && window.location.pathname !== '/') {
+            // Navigate to home page with the hash
+            window.location.href = href;
+            return;
+        }
+        
+        // If we're on the correct page, scroll to the element
+        const targetElement = document.getElementById(fragmentId);
+        if (targetElement) {
+            e.preventDefault();
+            targetElement.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    }
 });
 
 // Navbar scroll effect
 const navbar = document.querySelector('.navbar');
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 0) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
+    const scrollPercent = Math.min(window.scrollY / 100, 1);
+    navbar.style.opacity = 1 - (scrollPercent * 0.2); // This will go from 1 to 0.8
 });
 
 // Contact form handling
@@ -43,16 +56,12 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('visible');
         }
     });
 }, observerOptions);
 
 document.querySelectorAll('.service-card').forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(card);
 });
 
@@ -126,3 +135,53 @@ async function attachPart(targetSelector, partPath) {
         return false;
     }
 }
+
+// Handle active navigation link based on data-active attribute
+function setActiveNavLink() {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
+    
+    const activePage = navbar.getAttribute('data-active');
+    if (!activePage) return;
+    
+    // Remove active class from all links
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Add active class to the matching link
+    const activeLink = document.querySelector(`.nav-links a[href="/${activePage}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+}
+
+// Call setActiveNavLink when DOM is loaded
+document.addEventListener('DOMContentLoaded', setActiveNavLink);
+
+// Mobile menu handling
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const navLinks = document.querySelector('.nav-links');
+
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        const spans = mobileMenuBtn.querySelectorAll('span');
+        spans[0].style.transform = navLinks.classList.contains('active') ? 'rotate(45deg) translate(5px, 6px)' : '';
+        spans[1].style.opacity = navLinks.classList.contains('active') ? '0' : '1';
+        spans[2].style.transform = navLinks.classList.contains('active') ? 'rotate(-45deg) translate(5px, -6px)' : '';
+    });
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (navLinks.classList.contains('active') && 
+        !e.target.closest('.nav-links') && 
+        !e.target.closest('.mobile-menu-btn')) {
+        navLinks.classList.remove('active');
+        const spans = mobileMenuBtn.querySelectorAll('span');
+        spans[0].style.transform = '';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = '';
+    }
+});
