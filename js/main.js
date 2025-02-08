@@ -92,3 +92,37 @@ function updateTestimonial() {
 
 // Rotate testimonials every 5 seconds
 setInterval(updateTestimonial, 5000);
+
+async function attachPart(targetSelector, partPath) {
+    try {
+        const targetElement = document.querySelector(targetSelector);
+        if (!targetElement) {
+            throw new Error(`Target element not found: ${targetSelector}`);
+        }
+
+        const response = await fetch(partPath);
+        if (!response.ok) {
+            throw new Error(`Failed to load component: ${partPath}`);
+        }
+
+        const html = await response.text();
+        targetElement.innerHTML = html;
+
+        // Handle active nav links
+        const activeSection = targetElement.dataset.active;
+        if (activeSection) {
+            const navLinks = targetElement.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href').replace('/', '');
+                if (href === activeSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Error attaching component:', error);
+        return false;
+    }
+}
